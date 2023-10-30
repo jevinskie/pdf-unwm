@@ -42,7 +42,7 @@ def unwm_ieee(in_path: Path, out_path: Path):
         )
         end_clean_time = process_time()
         print(f"Cleaning took {end_clean_time - start_clean_time:.3f} CPU seconds.")
-        print(f"Saving cleaned PDF...")
+        print("Saving cleaned PDF...")
         save_start_time = process_time()
         pdf.save(
             out_path,
