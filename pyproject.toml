@@ -1,0 +1,51 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61", "setuptools-scm>=8.0"]
+
+[project]
+authors = [
+  {name = "Jevin Sweval", email = "jevinsweval@gmail.com"}
+]
+classifiers = [
+  "Programming Language :: Python :: 3"
+]
+dependencies = [
+  "path",
+  "pikepdf",
+  "tqdm",
+  "typed-argument-parser"
+]
+description = "Remove watermarks from PDFs"
+dynamic = ["version"]
+keywords = ["pdf", "watermark", "unwatermark", "ieee", "ieeexplore", "mindshare"]
+license = {text = "BSD-2-Clause"}
+name = "pdf-unwm"
+readme = {file = 'README.md', content-type = 'text/markdown'}
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit",
+  "ruff",
+  "types-tqdm"
+]
+
+[project.scripts]
+pdf-unwm-ieeexplore = "pdf_unwm.ieeexplore:main"
+pdf-unwm-mindshare = "pdf_unwm.mindshare:main"
+
+[project.urls]
+repository = "https://github.com/jevinskie/pdf-unwm"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.setuptools]
+zip-safe = true
+
+[tool.setuptools.dynamic]
+version = {attr = "pdf_unwm._version.__version__"}
+
+[tool.setuptools_scm]
+version_file = "pdf_unwm/_version.py"

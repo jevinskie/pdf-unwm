@@ -9,8 +9,8 @@ from tqdm import tqdm
 
 
 class Args(Tap):
-    in_pdf: Path  # Input watermarked IEEE PDF path
-    out_pdf: Path  # "Output cleaned IEEE PDF path
+    in_pdf: Path  # Input watermarked IEEEXplore PDF path
+    out_pdf: Path  # Output cleaned IEEEXplore PDF path
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, underscores_to_dashes=True, **kwargs)
@@ -20,10 +20,12 @@ class Args(Tap):
         self.add_argument("-o", "--out_pdf")
 
 
-def unwm_ieee(in_path: Path, out_path: Path):
+def unwm_ieeexplore(in_path: Path, out_path: Path):
     print(f"Input size: {in_path.size:_} bytes")
     start_clean_time = process_time()
     with pikepdf.Pdf.open(in_path, inherit_page_attributes=False) as pdf:
+        end_pdf_open_time = process_time()
+        print(f"Opening PDF took {end_pdf_open_time - start_clean_time:.3f} CPU seconds.")
         for pg in tqdm(
             pdf.pages,
             desc="Clearing watermarks...",
@@ -37,9 +39,7 @@ def unwm_ieee(in_path: Path, out_path: Path):
         start_remove_unref_time = process_time()
         pdf.remove_unreferenced_resources()
         end_remove_unref_time = process_time()
-        print(
-            f"Removing unreferenced content took {end_remove_unref_time - start_remove_unref_time:.3f} CPU seconds."
-        )
+        print(f"Removing unreferenced content took {end_remove_unref_time - start_remove_unref_time:.3f} CPU seconds.")
         end_clean_time = process_time()
         print(f"Cleaning took {end_clean_time - start_clean_time:.3f} CPU seconds.")
         print("Saving cleaned PDF...")
@@ -61,7 +61,7 @@ def unwm_ieee(in_path: Path, out_path: Path):
 
 def main() -> None:
     args = Args().parse_args()
-    unwm_ieee(args.in_pdf, args.out_pdf)
+    unwm_ieeexplore(args.in_pdf, args.out_pdf)
 
 
 if __name__ == "__main__":

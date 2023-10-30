@@ -1,1 +1,11 @@
+# Python
+**/__pycache__/
+/pdf_unwm.egg-info/
+/pdf_unwm/_version.py
+/.ruff_cache/
+
+# PikePDF
+**/.pikepdf.*
+
+# PDFs
 **/*.pdf
