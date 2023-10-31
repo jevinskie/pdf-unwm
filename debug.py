@@ -41,19 +41,17 @@ def deep_search(obj, substring: str, transform=lambda x: x):
     """
     results = []
     substring = substring.lower()
+    substring_encoded = tuple(substring.encode(e) for e in ("utf-8", "utf-16", "utf-32"))
 
     # Check if the substring exists in the object itself (for base case)
     def check_substring(o, path):
         # Check if the object is bytes and convert it to string for searching
         if isinstance(o, bytes):
-            for encoding in ["utf-8", "utf-16", "utf-32"]:
-                try:
-                    str_val = o.decode(encoding)
-                    if substring in str_val.lower():
-                        results.append((path, str_val))
-                        break
-                except UnicodeDecodeError:
-                    continue
+            ol = o.lower()
+            for es in substring_encoded:
+                if es in ol:
+                    results.append((path, o))
+                    break
         elif isinstance(o, str):
             if substring in o.lower():
                 results.append((path, o))
@@ -68,13 +66,13 @@ def deep_search(obj, substring: str, transform=lambda x: x):
         # If it's a mapping (like a dictionary)
         if isinstance(obj, collections.abc.Mapping):
             for k, v in obj.items():
-                check_substring(k, path + [f"key: {k}"])  # Checking the key
+                _search(k, path + [f"key: {k}"])  # Recursing on the key
                 _search(v, path + [k])  # Recursing on the value
 
         # If it's an iterable (like list, tuple, set, etc.)
-        elif isinstance(obj, collections.abc.Iterable) and not isinstance(obj, (str, bytes, pikepdf.Name)):
+        elif isinstance(obj, collections.abc.Iterable) and not isinstance(obj, (str, bytes)):
             # try:
-            for i, item in enumerate(map(transform, obj)):
+            for i, item in enumerate(obj):
                 _search(item, path + [i])
             # except TypeError:
             #     print(f"failes enumerate on iterable type: {type(obj)} obj: {obj}")
@@ -105,18 +103,20 @@ obj = {
 
 
 def xfrm(o):
-    if isinstance(o, pikepdf.Name):
-        return str(obj)
-    elif isinstance(o, pikepdf.Stream):
-        return o.unparse(resolved=True)
-    elif isinstance(o, pikepdf.Dictionary):
-        return dict(o.as_dict())
-    elif isinstance(o, pikepdf.String):
-        return str(o)
+    if isinstance(o, pikepdf.Dictionary):
+        for k in ("/Parent", "/Prev"):
+            try:
+                del o[k]
+            except KeyError:
+                pass
+        d = dict(o.as_dict())
+        return d
     elif isinstance(o, pikepdf.Array):
         return list(o.as_list())
-    elif isinstance(o, decimal.Decimal):
+    elif isinstance(o, (pikepdf.Name, pikepdf.String, decimal.Decimal)):
         return str(o)
+    elif isinstance(o, pikepdf.Stream):
+        return o.unparse(resolved=True)
     return o
 
 
