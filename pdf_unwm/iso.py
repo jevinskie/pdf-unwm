@@ -9,8 +9,8 @@ from tqdm import tqdm
 
 
 class Args(Tap):
-    in_pdf: Path  # Input watermarked IEEE Xplore PDF path
-    out_pdf: Path  # Output cleaned IEEE Xplore PDF path
+    in_pdf: Path  # Input watermarked ISO PDF path
+    out_pdf: Path  # Output cleaned ISO PDF path
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, underscores_to_dashes=True, **kwargs)

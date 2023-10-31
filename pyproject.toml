@@ -32,6 +32,7 @@ dev = [
 
 [project.scripts]
 pdf-unwm-ieeexplore = "pdf_unwm.ieeexplore:main"
+pdf-unwm-iso = "pdf_unwm.iso:main"
 pdf-unwm-mindshare = "pdf_unwm.mindshare:main"
 
 [project.urls]
