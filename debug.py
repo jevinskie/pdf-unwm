@@ -41,7 +41,9 @@ def deep_search(obj, substring: str, transform=lambda x: x):
     """
     results = []
     substring = substring.lower()
-    substring_encoded = tuple(substring.encode(e) for e in ("utf-8", "utf-16", "utf-32"))
+    substring_encoded = tuple(
+        substring.encode(e) for e in ("utf-8", "utf-16", "utf-16be", "utf-16le", "utf-32", "utf-32be", "utf-32le")
+    )
 
     # Check if the substring exists in the object itself (for base case)
     def check_substring(o, path):
@@ -116,7 +118,7 @@ def xfrm(o):
     elif isinstance(o, (pikepdf.Name, pikepdf.String, decimal.Decimal)):
         return str(o)
     elif isinstance(o, pikepdf.Stream):
-        return o.unparse(resolved=True)
+        return (o.unparse(resolved=True), o.read_bytes(pikepdf.StreamDecodeLevel.specialized))
     return o
 
 
