@@ -42,6 +42,9 @@ repository = "https://github.com/jevinskie/pdf-unwm"
 line-length = 120
 target-version = "py311"
 
+[tool.ruff.lint]
+extend-select = ["I"]
+
 [tool.setuptools]
 zip-safe = true
 

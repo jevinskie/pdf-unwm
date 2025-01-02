@@ -4,9 +4,9 @@ import collections.abc
 import decimal
 
 import pikepdf
+from ipdb import launch_ipdb_on_exception
 from path import Path
 from tap import Tap
-from ipdb import launch_ipdb_on_exception
 
 
 class Args(Tap):
