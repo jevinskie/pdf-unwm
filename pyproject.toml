@@ -10,8 +10,10 @@ classifiers = [
   "Programming Language :: Python :: 3"
 ]
 dependencies = [
+  "attrs",
   "path",
   "pikepdf",
+  "rich",
   "tqdm",
   "typed-argument-parser"
 ]
@@ -31,6 +33,7 @@ dev = [
 ]
 
 [project.scripts]
+pdf-unwm = "pdf_unwm.tools.pdf_unwm_tool:main"
 pdf-unwm-ieeexplore = "pdf_unwm.ieeexplore:main"
 pdf-unwm-iso = "pdf_unwm.iso:main"
 pdf-unwm-mindshare = "pdf_unwm.mindshare:main"

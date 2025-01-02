@@ -5,3 +5,4 @@ Remove watermarks from PDFs
 * MindShare (may need metadata scrubbing)
 * IEEE Xsplore (may need metadata scrubbing)
 * ISO (needs metadata scrubbing)
+* IEC (International Electrotechnical Commission) (skeleton)
